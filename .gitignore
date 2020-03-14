@@ -1,0 +1,6 @@
+.env
+.idea
+web/sites/*/files
+web/sites/*/settings.local.php
+web/sites/sites.local.php
+vendor
