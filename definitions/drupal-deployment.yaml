@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: drupal
+  labels:
+    app: drupal
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: drupal
+    tier: frontend
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dr-pv-claim
+  labels:
+    app: drupal
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+  labels:
+    app: drupal
+spec:
+  selector:
+    matchLabels:
+      app: drupal
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: drupal
+        tier: frontend
+    spec:
+      volumes:
+        - name: drupal-persistent-storage
+          persistentVolumeClaim:
+            claimName: dr-pv-claim
+      containers:
+        - image: juampynr/drupal8ci:latest
+          name: drupal
+          env:
+          - name: MYSQL_HOST
+            value: some-mysql
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-pass
+                key: password
+          ports:
+          - containerPort: 80
+            name: drupal
+          volumeMounts:
+          - name: drupal-persistent-storage
+            mountPath: /var/www/html
+      initContainers:
+        - name: install
+          image: juampynr/drupal8ci:latest
+          volumeMounts:
+            - name: drupal-persistent-storage
+              mountPath: /var/www/html
+          command: ["/bin/sh", "-c"]
+          args:
+            - wget -O /tmp/code.zip https://github.com/juampynr/drupal8-do/archive/master.zip;
+              unzip /tmp/code.zip;
+              cp -r /tmp/drupal8-do-master/.  /var/www/html/;
+              composer install;
