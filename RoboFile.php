@@ -106,8 +106,8 @@ class RoboFile extends \Robo\Tasks {
     $tasks[] = $this->taskExec('pwd');
     $tasks[] = $this->taskExec('ls -hal');
     $tasks[] = $this->taskExec('printenv');
-    $tasks[] = $this->taskExec('rsync --exclude=.git $GITHUB_WORKSPACE /tmp/artifact/');
-    $tasks[] = $this->taskFileSystemStack()->rename('/tmp/artifact', '$GITHUB_WORKSPACE/artifact');
+    $tasks[] = $this->taskExec('rsync --exclude=".git" $GITHUB_WORKSPACE/ /tmp/artifact/');
+    $tasks[] = $this->taskFileSystemStack()->rename('/tmp/artifact', '$GITHUB_WORKSPACE/');
     return $tasks;
   }
 
