@@ -11,9 +11,12 @@ jobs:
           fetch-depth: 1
       - name: Build project
         run: |
-          robo job:build
-      - name: Save project as artifact
+          robo job:build-project
+      - name: Build artifact
+        run: |
+          robo job:build-artifact
+      - name: Save artifact
         uses: actions/upload-artifact@v1
         with:
           name: project
-          path: .
+          path: artifact

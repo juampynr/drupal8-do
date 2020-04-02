@@ -11,16 +11,29 @@
 class RoboFile extends \Robo\Tasks {
 
   /**
-   * Command to build the environment
+   * Command to build the project.
    *
    * @return \Robo\Result
    *   The result of the collection of tasks.
    */
-  public function jobBuild() {
+  public function jobBuildProject() {
     $collection = $this->collectionBuilder();
     $collection->addTaskList($this->copyConfigurationFiles());
     $collection->addTaskList($this->setUpFilesDirectory());
     $collection->addTaskList($this->runComposer());
+    return $collection->run();
+  }
+
+  /**
+   * Command to build the artifact out of the project.
+   *
+   * @return \Robo\Result
+   *   The result of the collection of tasks.
+   */
+  public function jobBuildArtifact() {
+    $collection = $this->collectionBuilder();
+    $collection->addTaskList($this->createArtifactDir());
+    $collection->addTaskList($this->copyProjectIntoArtifactDir());
     return $collection->run();
   }
 
@@ -66,6 +79,32 @@ class RoboFile extends \Robo\Tasks {
       ->noInteraction()
       ->envVars(['COMPOSER_ALLOW_SUPERUSER' => 1, 'COMPOSER_DISCARD_CHANGES' => 1] + getenv())
       ->optimizeAutoloader();
+    return $tasks;
+  }
+
+  /**
+   * Creates the artifact directory.
+   *
+   * @return \Robo\Task\Base\Exec[]
+   *   An array of tasks.
+   */
+  protected function createArtifactDir() {
+    $tasks = [];
+    $tasks[] = $this->taskFilesystemStack()
+      ->mkdir('/tmp/artifact');
+    return $tasks;
+  }
+
+  /**
+   * Copies the project into the artifact dir.
+   *
+   * @return \Robo\Task\Base\Exec[]
+   *   An array of tasks.
+   */
+  protected function copyProjectIntoArtifactDir() {
+    $tasks = [];
+    $tasks[] = $this->taskExec('rsync --exclude=.git . /tmp/artifact/');
+    $tasks[] = $this->taskFileSystemStack()->rename('/tmp/artifact', '.');
     return $tasks;
   }
 
