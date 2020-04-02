@@ -1,0 +1,19 @@
+on: [push, pull_request]
+name: Tests and code
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: juampynr/drupal8ci:latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Build project
+        run: |
+          robo job:build
+      - name: Save project as artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: project
+          path: .
