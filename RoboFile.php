@@ -91,8 +91,7 @@ class RoboFile extends \Robo\Tasks {
     $tasks = [];
     $tasks[] = $this->taskFilesystemStack()
       ->mkdir('/tmp/artifact');
-    $tasks[] = $this->taskExec('rsync -vaz --exclude=".git" . /tmp/artifact/');
-    $tasks[] = $this->taskExec('tar -zcvf project.tar.gz /tmp/artifact/');
+    $tasks[] = $this->taskExec('tar -zcvf --exclude=".git" project.tar.gz .');
     return $tasks;
   }
 
