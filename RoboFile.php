@@ -35,9 +35,7 @@ class RoboFile extends \Robo\Tasks {
     $tasks = [];
     $tasks[] = $this->taskFilesystemStack()
       ->copy('.github/config/settings.local.php',
-        'web/sites/default/settings.local.php', $force)
-      ->copy('.github/config/.env',
-        '.env', $force);
+        'web/sites/default/settings.local.php', $force);
     return $tasks;
   }
 
