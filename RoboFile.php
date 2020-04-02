@@ -32,8 +32,7 @@ class RoboFile extends \Robo\Tasks {
    */
   public function jobBuildArtifact() {
     $collection = $this->collectionBuilder();
-    $collection->addTaskList($this->createArtifactDir());
-    $collection->addTaskList($this->copyProjectIntoArtifactDir());
+    $collection->addTaskList($this->createProjectArtifact());
     return $collection->run();
   }
 
@@ -93,7 +92,7 @@ class RoboFile extends \Robo\Tasks {
     $tasks[] = $this->taskFilesystemStack()
       ->mkdir('/tmp/artifact');
     $tasks[] = $this->taskExec('rsync -vaz --exclude=".git" . /tmp/artifact/');
-    $tasksjj[] = $this->taskExec('tar -zcvf project.tar.gz /tmp/artifact/');
+    $tasks[] = $this->taskExec('tar -zcvf project.tar.gz /tmp/artifact/');
     return $tasks;
   }
 
