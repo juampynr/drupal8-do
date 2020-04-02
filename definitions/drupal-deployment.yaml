@@ -49,7 +49,7 @@ spec:
           persistentVolumeClaim:
             claimName: dr-pv-claim
       containers:
-        - image: juampynr/drupal8ci:latest
+        - image: quay.io/juampynr/drupal8-do:latest
           name: drupal
           env:
           - name: MYSQL_HOST
