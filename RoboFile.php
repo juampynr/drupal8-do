@@ -83,28 +83,17 @@ class RoboFile extends \Robo\Tasks {
   }
 
   /**
-   * Creates the artifact directory.
-   *
-   * @return \Robo\Task\Base\Exec[]
-   *   An array of tasks.
-   */
-  protected function createArtifactDir() {
-    $tasks = [];
-    $tasks[] = $this->taskFilesystemStack()
-      ->mkdir('/tmp/artifact');
-    return $tasks;
-  }
-
-  /**
    * Copies the project into the artifact dir.
    *
    * @return \Robo\Task\Base\Exec[]
    *   An array of tasks.
    */
-  protected function copyProjectIntoArtifactDir() {
+  protected function createProjectArtifact() {
     $tasks = [];
+    $tasks[] = $this->taskFilesystemStack()
+      ->mkdir('/tmp/artifact');
     $tasks[] = $this->taskExec('rsync -vaz --exclude=".git" . /tmp/artifact/');
-    $tasks[] = $this->taskFileSystemStack()->rename('/tmp/artifact', './artifact', TRUE);
+    $tasksjj[] = $this->taskExec('tar -zcvf project.tar.gz /tmp/artifact/');
     return $tasks;
   }
 
