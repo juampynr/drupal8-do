@@ -89,7 +89,7 @@ class RoboFile extends \Robo\Tasks {
    */
   protected function createProjectArtifact() {
     $tasks = [];
-    $tasks[] = $this->taskExec('tar --exclude-vcs -zcvf /tmp/project.tar.gz *');
+    $tasks[] = $this->taskExec('tar -C ../ --exclude-vcs -zcvf /tmp/project.tar.gz drupal8-do');
     $tasks[] = $this->taskFilesystemStack()->rename('/tmp/project.tar.gz', 'project.tar.gz');
     return $tasks;
   }
