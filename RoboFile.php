@@ -103,14 +103,8 @@ class RoboFile extends \Robo\Tasks {
    */
   protected function copyProjectIntoArtifactDir() {
     $tasks = [];
-    $tasks[] = $this->taskExec('pwd');
-    $tasks[] = $this->taskExec('ls -hal');
-    $tasks[] = $this->taskExec('printenv');
     $tasks[] = $this->taskExec('rsync -vaz --exclude=".git" . /tmp/artifact/');
-    $tasks[] = $this->taskExec('ls -hal /tmp/artifact');
     $tasks[] = $this->taskFileSystemStack()->rename('/tmp/artifact', './artifact', TRUE);
-    $tasks[] = $this->taskExec('ls -hal .');
-    $tasks[] = $this->taskExec('ls -hal artifact');
     return $tasks;
   }
 
