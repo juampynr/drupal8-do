@@ -89,9 +89,8 @@ class RoboFile extends \Robo\Tasks {
    */
   protected function createProjectArtifact() {
     $tasks = [];
-    $tasks[] = $this->taskFilesystemStack()
-      ->mkdir('/tmp/artifact');
-    $tasks[] = $this->taskExec('tar -zcvf --exclude=".git" project.tar.gz .');
+    $tasks[] = $this->taskExec('tar -zcvf --exclude .git /tmp/project.tar.gz .');
+    $tasks[] = $this->taskFilesystemStack()->rename('/tmp/project.tar.gz', 'project.tar.gz');
     return $tasks;
   }
 
