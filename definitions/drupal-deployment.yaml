@@ -78,6 +78,6 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - cd /tmp;
-              wget https://github.com/juampynr/drupal8-do/releases/download/sha-f6bb6baf1ce24e24aed70a628f47fcfc864c5326/project.tar.gz;
+              wget https://github.com/juampynr/drupal8-do/releases/download/sha-7577027a2d80f654d98ffeb19c9cf4db04e5fc8b/project.tar.gz;
               tar xvzf project.tar.gz;
               rsync -vaz drupal8-do/ /var/www/html/;
