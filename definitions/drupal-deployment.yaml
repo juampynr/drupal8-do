@@ -49,16 +49,20 @@ spec:
           persistentVolumeClaim:
             claimName: dr-pv-claim
       containers:
-        - image: quay.io/juampynr/drupal8-do:latest
+        - image: juampynr/drupal8ci:latest
           name: drupal
           env:
-          - name: MYSQL_HOST
-            value: some-mysql
-          - name: MYSQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-pass
-                key: password
+            - name: DB_HOST
+              value: drupal-mysql
+            - name: DB_NAME
+              value: drupal
+            - name: DB_USER
+              value: drupal
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
           ports:
           - containerPort: 80
             name: drupal
@@ -73,7 +77,7 @@ spec:
               mountPath: /var/www/html
           command: ["/bin/sh", "-c"]
           args:
-            - wget -O /tmp/code.zip https://github.com/juampynr/drupal8-do/archive/master.zip;
-              unzip /tmp/code.zip;
-              cp -r /tmp/drupal8-do-master/.  /var/www/html/;
-              composer install;
+            - cd /tmp;
+              wget https://github.com/juampynr/drupal8-do/releases/download/sha-f6bb6baf1ce24e24aed70a628f47fcfc864c5326/project.tar.gz;
+              tar xvzf project.tar.gz;
+              rsync -vaz drupal8-do/ /var/www/html/;
