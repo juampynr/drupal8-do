@@ -10,7 +10,7 @@ $databases['default']['default'] = [
   'password' => getenv('DB_PASSWORD'),
   'prefix' => '',
   'host' => getenv('DB_HOST'),
-  'port' => 3306,
+  'port' => '',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 ];
