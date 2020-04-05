@@ -1,7 +1,8 @@
 secretGenerator:
 - name: mysql-pass
   literals:
-  - password=root
+  - password-root=root
+  - password-drupal=drupal
 resources:
 - mysql-deployment.yaml
 - drupal-deployment.yaml

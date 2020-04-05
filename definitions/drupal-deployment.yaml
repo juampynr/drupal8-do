@@ -62,7 +62,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-pass
-                  key: password
+                  key: password-drupal
           ports:
           - containerPort: 80
             name: drupal
