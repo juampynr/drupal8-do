@@ -9,12 +9,12 @@ jobs:
           fetch-depth: 1
       - name: Build image
         run: |
-          docker build --tag docker.pkg.github.com/juampynr/drupal8-do/app::${{ github.sha }} .
+          docker build --tag docker.pkg.github.com/juampynr/drupal8-do/app:${{ github.sha }} .
 
       - name: Deploy image
         uses: mattdavis0351/actions/docker-gpr@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: docker.pkg.github.com/juampynr/drupal8-do/app::${{ github.sha }}
+          image-name: docker.pkg.github.com/juampynr/drupal8-do/app:${{ github.sha }}
 
 
