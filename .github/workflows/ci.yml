@@ -12,6 +12,6 @@ jobs:
         uses: mattdavis0351/actions/docker-gpr@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: test
+          image-name: app
 
 
