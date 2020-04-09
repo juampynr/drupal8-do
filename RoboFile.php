@@ -25,18 +25,6 @@ class RoboFile extends \Robo\Tasks {
   }
 
   /**
-   * Command to build the artifact out of the project.
-   *
-   * @return \Robo\Result
-   *   The result of the collection of tasks.
-   */
-  public function jobBuildArtifact() {
-    $collection = $this->collectionBuilder();
-    $collection->addTaskList($this->createProjectArtifact());
-    return $collection->run();
-  }
-
-  /**
    * Copies configuration files.
    *
    * @return \Robo\Task\Base\Exec[]
@@ -78,19 +66,6 @@ class RoboFile extends \Robo\Tasks {
       ->noInteraction()
       ->envVars(['COMPOSER_ALLOW_SUPERUSER' => 1, 'COMPOSER_DISCARD_CHANGES' => 1] + getenv())
       ->optimizeAutoloader();
-    return $tasks;
-  }
-
-  /**
-   * Copies the project into the artifact dir.
-   *
-   * @return \Robo\Task\Base\Exec[]
-   *   An array of tasks.
-   */
-  protected function createProjectArtifact() {
-    $tasks = [];
-    $tasks[] = $this->taskExec('tar -C ../ --exclude-vcs -zcvf /tmp/project.tar.gz drupal8-do');
-    $tasks[] = $this->taskFilesystemStack()->rename('/tmp/project.tar.gz', 'project.tar.gz');
     return $tasks;
   }
 

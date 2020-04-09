@@ -3,40 +3,22 @@ name: Tests and code
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: juampynr/drupal8ci:latest
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
-      - name: Build project
+      - name: Build image
         run: |
-          robo job:build-project
-      - name: Build artifact
+          docker build --tag docker.pkg.github.com/juampynr/drupal8-do/app::${{ github.sha }}
+
+      - name: Push image
         run: |
-          robo job:build-artifact
-      - name: Save artifact
-        uses: actions/upload-artifact@v1
+          docker push docker.pkg.github.com/juampynr/drupal8-do/app::${{ github.sha }}
+
+      - name: Deploy image
+        uses: mattdavis0351/actions/docker-gpr@v1
         with:
-          name: project
-          path: project.tar.gz
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: sha-${{ github.sha }}
-          release_name: Release with sha ${{ github.sha }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./project.tar.gz
-          asset_name: project.tar.gz
-          asset_content_type: application/gzip
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ github.sha }}
+
+
