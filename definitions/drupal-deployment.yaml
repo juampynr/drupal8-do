@@ -49,7 +49,7 @@ spec:
           persistentVolumeClaim:
             claimName: dr-pv-claim
       containers:
-        - image: juampynr/drupal8ci:latest
+        - image: <IMAGE>
           name: drupal
           env:
             - name: DB_HOST
@@ -69,15 +69,3 @@ spec:
           volumeMounts:
           - name: drupal-persistent-storage
             mountPath: /var/www/html
-      initContainers:
-        - name: install
-          image: juampynr/drupal8ci:latest
-          volumeMounts:
-            - name: drupal-persistent-storage
-              mountPath: /var/www/html
-          command: ["/bin/sh", "-c"]
-          args:
-            - cd /tmp;
-              wget https://github.com/juampynr/drupal8-do/releases/download/sha-e2212a45d664ff59b9cdc8cad142eef10299d1bf/project.tar.gz;
-              tar xvzf project.tar.gz;
-              rsync -vaz drupal8-do/ /var/www/html/;
