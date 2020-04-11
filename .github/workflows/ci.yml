@@ -25,9 +25,9 @@ jobs:
           args: kubernetes cluster kubeconfig show actions-example > $GITHUB_WORKSPACE/.kubeconfig
 
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl --kubeconfig=$GITHUB_WORKSPACE/definitions apply
+        run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig -k definitions
 
       - name: Verify deployment
-        run: kubectl --kubeconfig=$GITHUB_WORKSPACE/definitions rollout status deployment/drupal
+        run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deployment/drupal
 
 
