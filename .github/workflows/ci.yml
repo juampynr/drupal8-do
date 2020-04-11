@@ -1,6 +1,7 @@
-push:
-  branches:
-    - master
+on:
+  push:
+    branches:
+      - master
 name: Tests and code
 jobs:
   build:
