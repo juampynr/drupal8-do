@@ -1,4 +1,6 @@
-on: [push, pull_request]
+push:
+  branches:
+    - master
 name: Tests and code
 jobs:
   build:
