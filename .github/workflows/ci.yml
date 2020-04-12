@@ -29,7 +29,8 @@ jobs:
 
       - name: Deploy to DigitalOcean Kubernetes
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u juampynr --password-stdin
+          kubectl create secret docker-registry regcred --docker-server=docker.pkg.github.com --docker-username=juampynr --docker-password=${{ secrets.GITHUB_TOKEN }}
+          kubectl edit serviceaccount default --namespace default
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -k definitions
 
       - name: Verify deployment

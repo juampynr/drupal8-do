@@ -13,6 +13,14 @@ spec:
   type: LoadBalancer
 ---
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: default
+imagePullSecrets:
+  - name: docker-registry
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: dr-pv-claim
@@ -29,6 +37,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: drupal
+  namespace: default
   labels:
     app: drupal
 spec:
