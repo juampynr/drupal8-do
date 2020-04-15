@@ -78,5 +78,3 @@ spec:
           volumeMounts:
           - name: drupal-persistent-storage
             mountPath: /var/www/html
-      imagePullSecrets:
-        - name: regcred
