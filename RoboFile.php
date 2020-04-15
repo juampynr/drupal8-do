@@ -11,6 +11,18 @@
 class RoboFile extends \Robo\Tasks {
 
   /**
+   * Command to update the database.
+   *
+   * @return \Robo\Result
+   *   The result of the collection of tasks.
+   */
+  public function databaseUpdate() {
+    $collection = $this->collectionBuilder();
+    $collection->addTaskList($this->updateDatabaseTasks());
+    return $collection->run();
+  }
+
+  /**
    * Command to build the project.
    *
    * @return \Robo\Result
@@ -67,6 +79,34 @@ class RoboFile extends \Robo\Tasks {
       ->envVars(['COMPOSER_ALLOW_SUPERUSER' => 1, 'COMPOSER_DISCARD_CHANGES' => 1] + getenv())
       ->optimizeAutoloader();
     return $tasks;
+  }
+
+  /**
+   * @return array
+   */
+  protected function updateDatabaseTasks(){
+    $tasks = [];
+
+    $tasks[] = $this->drush()
+      ->args('updatedb')
+      ->option('verbose');
+    $tasks[] = $this->drush()
+      ->args('config-import')
+      ->option('verbose');
+    $tasks[] = $this->drush()
+      ->args('cache:rebuild');
+
+    return $tasks;
+  }
+
+  /**
+   * Runs a Drush command.
+   *
+   * @return \Robo\Task\Base\Exec
+   *   A Drush exec command.
+   */
+  protected function drush() {
+    return $this->taskExec('vendor/bin/drush')->option('yes');
   }
 
 }
