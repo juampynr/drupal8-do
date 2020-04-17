@@ -17,6 +17,12 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           image-name: app
 
+      - name: Verify image
+        run: |
+          TAG=$(echo -n $GITHUB_SHA | tail -c 3)
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u juampynr --password-stdin
+          docker pull docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'
+
       - name: Update deployment file
         run: TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
 
