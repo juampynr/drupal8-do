@@ -11,16 +11,12 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Build and deploy image
-        uses: mattdavis0351/actions/docker-gpr@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: app
-
-      - name: Verify image
+      - name: Build, push, and verify image
         run: |
           TAG=$(echo -n $GITHUB_SHA | tail -c 3)
           echo ${{ secrets.PACKAGES_TOKEN }} | docker login docker.pkg.github.com -u juampynr --password-stdin
+          docker build --tag docker.pkg.github.com/juampynr/drupal8-do/app:${TAG} .
+          docker push docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
           docker pull docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
 
       - name: Update deployment file
