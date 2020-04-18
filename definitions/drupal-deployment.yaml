@@ -51,6 +51,16 @@ spec:
       containers:
         - image: <IMAGE>
           name: drupal
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - >
+                    cd /var/www/html;
+                    vendor/bin/robo database:update;
           env:
             - name: DB_HOST
               value: drupal-mysql
