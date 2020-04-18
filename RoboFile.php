@@ -31,8 +31,16 @@ class RoboFile extends \Robo\Tasks {
   public function jobBuildProject() {
     $collection = $this->collectionBuilder();
     $collection->addTaskList($this->copyConfigurationFiles());
-    $collection->addTaskList($this->setUpFilesDirectory());
     $collection->addTaskList($this->runComposer());
+    return $collection->run();
+  }
+
+  /**
+   * Command to configure the files directory.
+   */
+  public function filesConfigure() {
+    $collection = $this->collectionBuilder();
+    $collection->addTaskList($this->setUpFilesDirectory());
     return $collection->run();
   }
 
