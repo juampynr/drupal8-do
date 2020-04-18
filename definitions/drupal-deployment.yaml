@@ -59,8 +59,8 @@ spec:
                   - "/bin/sh"
                   - "-c"
                   - >
-                    cd /var/www/html;
-                    # vendor/bin/robo database:update;
+                    #cd /var/www/html;
+                    #vendor/bin/robo database:update;
           env:
             - name: DB_HOST
               value: drupal-mysql
