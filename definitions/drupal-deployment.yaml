@@ -87,7 +87,6 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: drupal-cron
-  concurrencyPolicy: Forbid
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -100,3 +99,4 @@ spec:
               args:
                 -  <DRUPAL_CRON>
           restartPolicy: OnFailure
+          concurrencyPolicy: Forbid
