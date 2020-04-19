@@ -83,7 +83,7 @@ spec:
       imagePullSecrets:
         - name: regcred
 ---
-apiVersion: apps/v1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: drupal-cron
