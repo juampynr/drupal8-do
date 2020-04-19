@@ -82,3 +82,21 @@ spec:
             mountPath: /var/www/html/web/sites/default/files
       imagePullSecrets:
         - name: regcred
+---
+apiVersion: apps/v1
+kind: CronJob
+metadata:
+  name: drupal-cron
+  concurrencyPolicy: Forbid
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: drupal-cron
+              image: byrnedo/alpine-curl:0.1.8
+              args:
+                -  <DRUPAL_CRON>
+          restartPolicy: OnFailure

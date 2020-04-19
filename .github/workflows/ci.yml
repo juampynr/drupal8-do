@@ -20,7 +20,9 @@ jobs:
           docker pull docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
 
       - name: Update deployment file
-        run: TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
+        run: |
+          TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
+          sed -i 's|<DRUPAL_CRON>|${{ secrets.DRUPAL_CRON }}|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
 
       - name: Save DigitalOcean kubeconfig
         uses: digitalocean/action-doctl@master
