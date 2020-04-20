@@ -89,6 +89,7 @@ metadata:
   name: drupal-cron
 spec:
   schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
@@ -99,4 +100,3 @@ spec:
               args:
                 -  <DRUPAL_CRON>
           restartPolicy: OnFailure
-          concurrencyPolicy: Forbid
