@@ -37,7 +37,7 @@ spec:
       app: drupal
       tier: frontend
   strategy:
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
