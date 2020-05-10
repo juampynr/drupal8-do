@@ -51,8 +51,17 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-pass
-              key: password-root
+              name: mysql
+              key: admin-password
+        - name: MYSQL_DATABASE
+          value: drupal
+        - name: MYSQL_USER
+          value: drupal
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: nonadmin-password
         ports:
         - containerPort: 3306
           name: mysql
