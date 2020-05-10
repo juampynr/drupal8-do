@@ -62,8 +62,8 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-pass
-                  key: password-drupal
+                  name: mysql
+                  key: nonadmin-password
           ports:
           - containerPort: 80
             name: drupal
