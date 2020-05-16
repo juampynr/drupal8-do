@@ -31,7 +31,7 @@ jobs:
         with:
           args: kubernetes cluster kubeconfig show drupster > $GITHUB_WORKSPACE/.kubeconfig
 
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Deploy to DigitalOcean
         run: |
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -k definitions
 
