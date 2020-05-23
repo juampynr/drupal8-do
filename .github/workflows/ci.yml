@@ -19,12 +19,7 @@ jobs:
           docker push docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
           docker pull docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
 
-      - name: Update deployment file
-        run: |
-          TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
-          sed -i 's|<DRUPAL_CRON>|${{ secrets.DRUPAL_CRON }}|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
-
-      - name: Save DigitalOcean kubeconfig
+      - name: Save cluster configuration
         uses: digitalocean/action-doctl@master
         env:
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
@@ -33,6 +28,8 @@ jobs:
 
       - name: Deploy to DigitalOcean
         run: |
+          TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
+          sed -i 's|<DRUPAL_CRON>|${{ secrets.DRUPAL_CRON }}|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -k definitions
 
       - name: Verify deployment
