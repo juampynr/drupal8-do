@@ -31,15 +31,15 @@ jobs:
         run: |
           TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
           sed -i 's|<DRUPAL_CRON>|${{ secrets.DRUPAL_CRON }}|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -k definitions
+          kubectl apply -k definitions
 
       - name: Verify deployment
-        run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deployment/drupal
+        run: kubectl rollout status deployment/drupal
 
       - name: Update database
         run: |
           POD_NAME=$(kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig get pods -l tier=frontend -o=jsonpath='{.items[0].metadata.name}')
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig exec $POD_NAME -c drupal -- vendor/bin/robo files:configure
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig exec $POD_NAME -c drupal -- vendor/bin/robo database:update
+          kubectl exec $POD_NAME -c drupal -- vendor/bin/robo files:configure
+          kubectl exec $POD_NAME -c drupal -- vendor/bin/robo database:update
 
 
