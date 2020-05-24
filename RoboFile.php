@@ -71,7 +71,7 @@ class RoboFile extends \Robo\Tasks {
       ->mkdir('web/sites/default/files')
       ->chgrp('web/sites/default/files', 'www-data', TRUE)
       ->chown('web/sites/default/files', 'www-data', TRUE)
-      ->chmod('web/sites/default/files', 0777);
+      ->chmod('web/sites/default/files', 0770);
     return $tasks;
   }
 
