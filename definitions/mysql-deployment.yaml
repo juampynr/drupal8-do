@@ -77,12 +77,3 @@ spec:
       - name: mysql-initdb
         configMap:
           name: mysql-initdb-config
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-initdb-config
-data:
-  initdb.sql: |
-    CREATE DATABASE drupal;
-    GRANT ALL PRIVILEGES ON drupal.* TO 'drupal'@'%' IDENTIFIED BY 'drupal';
