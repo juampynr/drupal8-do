@@ -93,9 +93,9 @@ spec:
                     secretKeyRef:
                       name: api
                       key: key
-              command: ["/bin/sh","-c"]
+              command: ["/bin/bash","-c"]
               args:
                 - doctl kubernetes cluster kubeconfig save drupster;
                   POD_NAME=$(kubectl get pods -l tier=frontend -o=jsonpath='{.items[0].metadata.name}');
-                  kubectl exec $POD_NAME -c drupal -- vendor/bin/drush core:cron
+                  kubectl exec $POD_NAME -c drupal -- vendor/bin/drush core:cron;
           restartPolicy: OnFailure
