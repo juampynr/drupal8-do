@@ -13,11 +13,10 @@ jobs:
 
       - name: Build, push, and verify image
         run: |
-          TAG=$(echo -n $GITHUB_SHA | tail -c 3)
           echo ${{ secrets.PACKAGES_TOKEN }} | docker login docker.pkg.github.com -u juampynr --password-stdin
-          docker build --tag docker.pkg.github.com/juampynr/drupal8-do/app:${TAG} .
-          docker push docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
-          docker pull docker.pkg.github.com/juampynr/drupal8-do/app:${TAG}
+          docker build --tag docker.pkg.github.com/juampynr/drupal8-do/app:${GITHUB_SHA} .
+          docker push docker.pkg.github.com/juampynr/drupal8-do/app:${GITHUB_SHA}
+          docker pull docker.pkg.github.com/juampynr/drupal8-do/app:${GITHUB_SHA}
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -29,7 +28,7 @@ jobs:
 
       - name: Deploy to DigitalOcean
         run: |
-          TAG=$(echo -n $GITHUB_SHA | tail -c 3) && sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${TAG}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
+          sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${GITHUB_SHA}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
           sed -i 's|<DRUPAL_CRON>|${{ secrets.DRUPAL_CRON }}|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
           kubectl apply -k definitions
           kubectl rollout status deployment/drupal
