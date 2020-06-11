@@ -78,7 +78,7 @@ kind: CronJob
 metadata:
   name: drupal-cron
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "*/5 * * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -86,7 +86,16 @@ spec:
         spec:
           containers:
             - name: drupal-cron
-              image: byrnedo/alpine-curl:0.1.8
+              image: juampynr/digital-ocean-cronjob:latest
+              env:
+                - name: DIGITALOCEAN_ACCESS_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: api
+                      key: key
+              command: ["/bin/sh","-c"]
               args:
-                -  <DRUPAL_CRON>
+                - doctl kubernetes cluster kubeconfig save <cluster-id|cluster-name>
+                - POD_NAME=$(kubectl get pods -l tier=frontend -o=jsonpath='{.items[0].metadata.name}')
+                - kubectl exec POD_NAME -c drupal -- vendor/bin/drush core:cron
           restartPolicy: OnFailure
