@@ -95,7 +95,7 @@ spec:
                       key: key
               command: ["/bin/sh","-c"]
               args:
-                - doctl kubernetes cluster kubeconfig save <cluster-id|cluster-name>
-                - POD_NAME=$(kubectl get pods -l tier=frontend -o=jsonpath='{.items[0].metadata.name}')
-                - kubectl exec POD_NAME -c drupal -- vendor/bin/drush core:cron
+                - doctl kubernetes cluster kubeconfig save <cluster-id|cluster-name>;
+                  POD_NAME=$(kubectl get pods -l tier=frontend -o=jsonpath='{.items[0].metadata.name}');
+                  kubectl exec POD_NAME -c drupal -- vendor/bin/drush core:cron
           restartPolicy: OnFailure
