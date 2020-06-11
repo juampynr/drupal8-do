@@ -16,7 +16,7 @@ class RoboFile extends \Robo\Tasks {
    * @return \Robo\Result
    *   The result of the collection of tasks.
    */
-  public function databaseUpdate() {
+  public function projectDatabaseUpdate() {
     $collection = $this->collectionBuilder();
     $collection->addTaskList($this->updateDatabaseTasks());
     return $collection->run();
@@ -28,7 +28,7 @@ class RoboFile extends \Robo\Tasks {
    * @return \Robo\Result
    *   The result of the collection of tasks.
    */
-  public function jobBuildProject() {
+  public function projectBuild() {
     $collection = $this->collectionBuilder();
     $collection->addTaskList($this->copyConfigurationFiles());
     $collection->addTaskList($this->runComposer());
@@ -38,7 +38,7 @@ class RoboFile extends \Robo\Tasks {
   /**
    * Command to configure the files directory.
    */
-  public function filesConfigure() {
+  public function projectFilesConfigure() {
     $collection = $this->collectionBuilder();
     $collection->addTaskList($this->setUpFilesDirectory());
     return $collection->run();

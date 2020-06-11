@@ -36,7 +36,5 @@ jobs:
       - name: Update database
         run: |
           POD_NAME=$(kubectl get pods -l tier=frontend -o=jsonpath='{.items[0].metadata.name}')
-          kubectl exec $POD_NAME -c drupal -- vendor/bin/robo files:configure
-          kubectl exec $POD_NAME -c drupal -- vendor/bin/robo database:update
-
-
+          kubectl exec $POD_NAME -c drupal -- vendor/bin/robo project:files-configure
+          kubectl exec $POD_NAME -c drupal -- vendor/bin/robo project:database-update

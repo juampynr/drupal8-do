@@ -1,3 +1,3 @@
 FROM juampynr/drupal8ci:latest
 COPY . /var/www/html/
-RUN robo job:build-project
+RUN robo project:build
