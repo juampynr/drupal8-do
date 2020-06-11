@@ -29,7 +29,6 @@ jobs:
       - name: Deploy to DigitalOcean
         run: |
           sed -i 's|<IMAGE>|docker.pkg.github.com/juampynr/drupal8-do/app:'${GITHUB_SHA}'|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
-          sed -i 's|<DRUPAL_CRON>|${{ secrets.DRUPAL_CRON }}|' $GITHUB_WORKSPACE/definitions/drupal-deployment.yaml
           kubectl apply -k definitions
           kubectl rollout status deployment/drupal
 
